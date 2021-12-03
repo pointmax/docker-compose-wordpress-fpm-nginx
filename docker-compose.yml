@@ -33,8 +33,6 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./wordpress:/var/www/html
       - ${WP_CONTENT}:/var/www/html/wp-content
-      - ./le/certs:/etc/letsencrypt
-      - ./le/data:/data/letsencrypt
     expose:
       - 80
     depends_on:
