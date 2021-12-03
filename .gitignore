@@ -2,3 +2,5 @@ data/*
 wp-content/*
 le
 .env
+wordpress/*
+mysql/*
