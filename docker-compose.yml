@@ -9,11 +9,11 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - mysql-datavolume:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
     restart: unless-stopped
 
   wp:
-    image: wordpress:fpm-alpine
+    build: .
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
@@ -24,24 +24,27 @@ services:
       - db
     volumes:
       - ${WP_CONTENT}:/var/www/html/wp-content
-      - wordpress:/var/www/html
+      - ./wordpress:/var/www/html
     restart: unless-stopped
 
   nginx:
     image: nginx:alpine
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - wordpress:/var/www/html
+      - ./wordpress:/var/www/html
       - ${WP_CONTENT}:/var/www/html/wp-content
       - ./le/certs:/etc/letsencrypt
       - ./le/data:/data/letsencrypt
-    ports:
-      - '80:80'
-      - '443:443'
+    expose:
+      - 80
     depends_on:
       - wp
+    networks: 
+      - reverse_proxy
+      - default
     restart: unless-stopped
 
-volumes:
-  mysql-datavolume:
-  wordpress:
+networks:
+  reverse_proxy:
+    external: true
+    name: main
