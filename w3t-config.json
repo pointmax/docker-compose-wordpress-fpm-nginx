@@ -1,0 +1,22 @@
+{
+    "version": "2.2.0",
+    "dbcache.enabled": false,
+    "dbcache.engine": "redis",
+    "dbcache.redis.servers": [
+        "redis:6379"
+    ],
+    "lazyload.enabled": true,
+    "objectcache.enabled": false,
+    "objectcache.engine": "redis",
+    "objectcache.redis.servers": [
+        "redis:6379"
+    ],
+    "pgcache.enabled": true,
+    "pgcache.engine": "redis",
+    "pgcache.redis.servers": [
+        "redis:6379"
+    ],
+    "pgcache.purge.author": true,
+    "minify.enabled": true,
+    "minify.html.enable": true
+}
