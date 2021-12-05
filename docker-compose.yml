@@ -11,6 +11,13 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     restart: unless-stopped
+  
+  redis:
+    image: redis:6.2.6-alpine
+    expose:
+      - "6379"
+    entrypoint: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru --save ""
+    restart: unless-stopped
 
   wp:
     build: .
@@ -22,6 +29,7 @@ services:
       WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
     depends_on:
       - db
+      - redis
     volumes:
       - ${WP_CONTENT}:/var/www/html/wp-content
       - ./wordpress:/var/www/html
@@ -41,6 +49,25 @@ services:
       - reverse_proxy
       - default
     restart: unless-stopped
+
+  wpcli:
+    depends_on: 
+      - db
+      - wp
+    image: wordpress:cli
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+    entrypoint: sh
+    command: "--info"
+    volumes:
+      - ./wordpress:/var/www/html
+      - ${WP_CONTENT}:/var/www/html/wp-content
+      - ./w3t-config.json:/var/www/w3t-config.json
+    working_dir: /var/www/html
 
 networks:
   reverse_proxy:
