@@ -33,7 +33,7 @@ services:
     volumes:
       - ${WP_CONTENT}:/var/www/html/wp-content
       - ./wordpress:/var/www/html
-      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+      - ./custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
     restart: unless-stopped
 
   nginx:
