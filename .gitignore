@@ -4,3 +4,4 @@ le
 .env
 wordpress/*
 mysql/*
+dkim/*

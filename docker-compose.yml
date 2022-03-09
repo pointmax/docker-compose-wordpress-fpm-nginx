@@ -70,6 +70,15 @@ services:
       - ./w3t-config.json:/var/www/w3t-config.json
     working_dir: /var/www/html
 
+  mail:
+    image: mwader/postfix-relay
+    restart: always
+    environment:
+      - POSTFIX_myhostname=${SITE_URL}
+      - OPENDKIM_DOMAINS=${SITE_URL}
+    volumes: 
+      - ./dkim:/etc/opendkim/keys/
+
 networks:
   reverse_proxy:
     external: true
