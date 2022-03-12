@@ -1,44 +1,39 @@
-Docker Environment for Wordpress with FPM & Nginx
+Wordpress with Nginx & PHP FPM docker compose setup
 ===
+
+Forked from [dbtek/docker-compose-wordpress-fpm-nginx](https://github.com/dbtek/docker-compose-wordpress-fpm-nginx)
+
+Thanks to Ismail Demirbilek [@dbtek](https://twitter.com/dbtek)
 
 Run Wordpress through Nginx & PHP FPM effortlessly.
 
+### Features
+- easy install
+- webp support
+- W3 Total Cache with automatic configuration
+- redis cache
+- postfix mail server
+- no ssl - this setup is meant to be run behind a reverse proxy (like [nginx proxy manager](https://nginxproxymanager.com/))
 
 ### Install
 - Download zip or clone repo. Place files on the host.
+- Copy .env.example to .env
 - Update config via `.env` file accordingly. **Don't use it as is!**
-- Update certificate domain inside `nginx/wp.conf`.
-- Run following.
+- make sure your reverse proxy is in the same network (main)
+- start by running:
 
 ```bash
-# generate SSL certificates with letsencrypt
-$ sh ./gencert.sh
-# run services
 $ docker-compose up -d
 ```
 
 That's it.
 
-### Renew SSL Certificates
-There is no built in service for auto renewal. To renew certs run following:
-
-```bash
-$ sh ./renewcert.sh
-```
-
-To add auto renewal a cron job can be set up like following.
-
-```
-43 6 * * * /path/to/renewcert.sh
-```
 
 ### Folder Structure
-- le/         - Volumes for Letsencrypt certs & files.
+- dkim/       - Volume postfix dkim signatures (not tested yet)
 - nginx/      - Nginx configuration.
 - wp-content/ - Wordpress volume.
-
-### Author 
-Ismail Demirbilek - [@dbtek](https://twitter.com/dbtek)
+- mysql/      - Mysql database (useful for easy migration)
 
 ### License
 MIT
