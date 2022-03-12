@@ -17,6 +17,6 @@
         "redis:6379"
     ],
     "pgcache.purge.author": true,
-    "minify.enabled": true,
+    "minify.enabled": false,
     "minify.html.enable": true
 }
